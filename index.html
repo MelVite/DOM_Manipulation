@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manipulación del DOM</title>
+    <!--Si queremos poner el script de Java es esta sección se puede hacer script async (nuestros procesos no correr uno antes del otro)
+    En cambio script defender carga solo despues de que todo el HTML se encuentre listo -->
+    <!--<script src="./main.js" async defer></script>-->
+    <!--Todas las formas mencionadas estpan bien-->
+    <script src="./cards.js" async defer></script>
+    
+</head>
+<body>
+    <div id="div-1">
+        <!--Un elemento <input> es un componente interactivo que permite a los usuarios ingresar datos mediante un formulario en una página web. Puedes usarlo para recopilar diferentes tipos de información.-->
+        <input type="text" name="username" value=""/>
+        <p id="p1"></p>
+    </div>
+    <div id="div-2">
+        <section><!--Etiqueta semántica para dividir, también lo es nav-->
+            <div class="container" id="card-container"></div>
+
+        </section>
+    </div>
+    <script src="./main.js"></script> 
+</body>
+</html>
