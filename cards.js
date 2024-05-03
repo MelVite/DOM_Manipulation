@@ -7,55 +7,82 @@
     *   Edad 
     *   Lista de cosas que le interesen (películas, canciones, etc)
  * Insertar en la tarjeta 
+ * Crear funciones reutilizables
+ * Funciones para crear items 
+ * Funciones para inyectar texto
+ * funciones para renderizar 
+ * multiples usuarios 
  * Mostrar dentro del div con class container
  */
 
 //Constantes GLOBALES --> se declaran con llaves y un valor, como un bloque de código, osea un atributo y su valor
-const CARDS_CONTAINER = document.getElementById("card-container");
+const CARDS_CONTAINER = document.querySelector("#card-container");
 //otra opción sino se puede usar getElementById es con querySelector(".ClassElemento o #IDelemento")
-const USER = {
- id: 1, //valor de ID para este usuario
- username: 'User Name', 
- desc: 'Sobre mi',
- age: 26,
- fav_books: { // Es un objeto anidado que contiene un array
-    books: [
-        'El señor de los Anillos', 
-        'Mo Dao Zu Shi', 
-        'El llamado de lo Salvaje', 
-        'La Bendición del Oficial del Cielo'
-    ],
- },
-};
+const USERS = [
+    {
+        id: 1,
+        username: "booklover123",
+        description: "Avid reader and coffee enthusiast.",
+        age: 29,
+        fav_books: {
+            books: ["To Kill a Mockingbird", "1984", "Pride and Prejudice"],
+        },
+    },
+  {
+    id: 2,
+    username: "literature_junkie",
+    description: "Poetry lover and amateur writer.",
+    age: 35,
+    fav_books: {
+      books: ["The Great Gatsby", "Invisible Man", "Beloved"],
+    },
+  },
+];
 
 
 //Crear secciones
-const card = document.createElement("div"); //creamos un div para hacer la tarjeta, no existe aún dentro de mi HTML
-const name_section = document.createElement("h3");
-const desc_section = document.createElement("p");
-const age_section = document.createElement("p");
-const book_section = document.createElement("div");
-//LA LISTA SE QUEDA PENDIENTE
-const bookList = USER.fav_books.books.map((e) => {
-    const item = document.createElement("ul");
-    item.textContent = e;
-    return item;
-}) // map es una iteración por cada elemento y siempre regresa algo
-console.log(bookList);
+function createElements() {
+    const cardObj = {
+      name_section: document.createElement("h3"),
+      desc_section: document.createElement("p"),
+      age_section: document.createElement("p"),
+      book_section: document.createElement("div"),
+    };
+    return cardObj;
+}
 
 //Crear tarjeta
-name_section.textContent = USER.username;
-desc_section.textContent = USER.desc;
-age_section.textContent = USER.age;
-book_section.append(...bookList); //me marca un error ya que bookList no es un nodo es un array, podemos utilizar un forEach o un operador llamado Spread 
-// spread ... --> permite a un elemento iterable tal como un arreglo o cadena ser expandido en lugares donde sero a más argumentos o elementos son esperados, o a un objeto ser expandido en lugares donde cero o más pares de valores clave son esperados.
+//inyectamos info
+function injectData(obj, user) {
+    const bookList = user.fav_books.books.map((e) => {
+      const item = document.createElement("ul");
+      item.textContent = e;
+      return item;
+    });
+  
+    obj.name_section.textContent = user.username;
+    obj.desc_section.textContent = user.desc;
+    obj.age_section.textContent = user.age;
+    obj.book_section.append(...bookList);
+    renderCard(obj);
+}  
 
-//Insertamos los datos ateriores al div y despues al div-container con la función append que inserta nodos
-card.append(name_section, desc_section, age_section, book_section);
+function renderCard(cardObj) {
+    const card = document.createElement("div");
+    card.append(
+      cardObj.name_section,
+      cardObj.desc_section,
+      cardObj.age_section,
+      cardObj.book_section,
+    );
+    card.className = "div-creado";
+    CARDS_CONTAINER.appendChild(card);
+}
 
-//insertar o inyectar tarjeta en container 
-CARDS_CONTAINER.appendChild(card);
-//appendChild() solo inserta un nodo, append() permite mandar diferentes
+USERS.forEach((user) => {
+    const cardData = createElements();
+    injectData(cardData, user);
+});
 
 //EJERCICIO: Hay una implementación de 17 líneas que puede hacer lo anterior con multiples usuarios, buscar.
 //Convertir lo anterior de manera funcional, pasando las variable globales a funciones y debe funcionar a multiples usuarios (spreach, map, etc.)
